@@ -1,11 +1,15 @@
 import { jwtDecode } from 'jwt-decode';
-
+import axios from 'axios';
 
 export const authenticateWithToken = async (token) => {
-  // Ici, nous devons simuler ou faire une requête à une API pour authentifier l'utilisateur.
-  // Pour simplifier, nous allons juste décoder le token.
-
   const user = jwtDecode(token);
+  localStorage.setItem('token', token);
+  return user;
+};
+
+export const validateCode = async (code) => {
+  const response = await axios.post('https://hackathon-api-3cw7.onrender.com/auth/validate_code', { code });
+  const { user, token } = response.data;
   localStorage.setItem('token', token);
   return user;
 };
