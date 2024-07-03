@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { CssBaseline, Container, AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
-import TokenReader from './components/TokenReader';
-import Dashboard from './components/Dashboard';
+//import { BrowserRouter as Router } from 'react-router-dom';
+//import TokenReader from './components/TokenReader';
+//import Dashboard from './components/Dashboard';
 import { getCurrentUser, logout } from './services/auth';
+import AppRoutes from './Route';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -45,11 +47,7 @@ const App = () => {
             alignItems: 'center',
           }}
         >
-          {user ? (
-            <Dashboard user={user} onLogout={handleLogout} />
-          ) : (
-            <TokenReader onAuthenticate={handleAuthenticate} />
-          )}
+          <AppRoutes user={user} onAuthenticate={handleAuthenticate} />
         </Box>
       </Container>
     </React.Fragment>
