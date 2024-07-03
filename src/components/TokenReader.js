@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
+import { validateCode } from '../services/api';
 import axios from 'axios';
 
 const TokenReader = ({ onAuthenticate }) => {
@@ -12,9 +13,10 @@ const TokenReader = ({ onAuthenticate }) => {
     setError('');
 
     try {
-      const response = await axios.post('https://hackathon-api-3cw7.onrender.com/auth/validate_code', { code });
-      const user = response.data; // Supposons que l'API retourne les informations de l'utilisateur
-      onAuthenticate(user);
+      console.log(code)
+      const response =  await axios.post('https://hackathon-api-3cw7.onrender.com/auth/read_nfc', {code});
+      console.log(response.data)
+
     } catch (error) {
       setError('Invalid code. Please try again.');
     }
@@ -32,7 +34,8 @@ const TokenReader = ({ onAuthenticate }) => {
       }}
     >
       <Typography component="h1" variant="h5" gutterBottom>
-        Authentifier avec votre carte NFC sur votre mobile et saisissez votre code a 3 chiffres.
+      Authentifier vous avec votre carte NFC sur votre application mobile et saisissez votre code a 3 chiffres.
+
       </Typography>
 
       <TextField
@@ -43,7 +46,6 @@ const TokenReader = ({ onAuthenticate }) => {
         label="Code à 3 chiffres"
         value={code}
         onChange={(e) => setCode(e.target.value)}
-        disabled={loading}
         sx={{ marginTop: 4 }}
       />
       <Button
@@ -52,7 +54,6 @@ const TokenReader = ({ onAuthenticate }) => {
         variant="contained"
         color="primary"
         onClick={handleSubmit}
-        disabled={loading}
       >
         Valider
       </Button>
