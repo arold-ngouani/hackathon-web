@@ -3,10 +3,12 @@ import { Typography, Button, Box, Paper, Avatar } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { logout } from '../services/auth';  // Assurez-vous d'importer correctement la fonction logout depuis votre service d'authentification
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard =  () => {
     const [userData, setUserData] = useState({});
     const token = localStorage.getItem('token');
+    const navigate = useNavigate();
     console.log(token)
     useEffect(() =>{
 
@@ -20,13 +22,17 @@ const Dashboard =  () => {
         setUserData(response.data)
     
         } catch (error) {
-          console.error('Error adding article:', error);
+          if (error.response && error.response.status === 401) {
+            navigate('/'); 
+          } else {
+            console.log('Erreur lors de la validation. Veuillez réessayer.');
+          }
         }
       }
       chargerDonnees()
     },[])
     if (!token) {
-      alert('No token found. Please log in.');
+      navigate('/')
       return;
     }
     
